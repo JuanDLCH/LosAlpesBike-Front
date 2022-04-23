@@ -43,8 +43,7 @@ export default function SignIn() {
             email: data.get('email'),
             password: data.get('password'),
         }))
-        navigate('/')
-        window.location.reload();
+        navigate('/Admin')
     };
 
     return (

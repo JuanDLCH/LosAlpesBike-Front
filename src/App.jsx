@@ -1,10 +1,11 @@
 import './App.css';
 import { LandingPage } from './pages/Landing';
-import { SignInPage } from './pages/SignIn/SignIn';
+import { SignInPage } from './pages/SignIn/SignIn'; //Si se quita no carga la img :v
 import Navbar from './components/Admin/Navbar/Navbar';
 import { AuthProvider } from './auth/AuthProvider';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify'
+import { Admin } from './pages/Admin';
 
 export const App = () => {
   return (
@@ -14,10 +15,7 @@ export const App = () => {
           <Navbar />
           <Routes>
             <Route path='/' element={<LandingPage />} />
-            <Route path='/sign-in' element={<SignInPage />} />
-            <Route path='/services' element={<LandingPage />} />
-            <Route path='/about' element={<LandingPage />} />
-            <Route path='/admin' element={<LandingPage />} />
+            <Route path='/Admin' element={<Admin />} />
             <Route path='*' element={<LandingPage />} />
           </Routes>
         </BrowserRouter>

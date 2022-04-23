@@ -6,43 +6,34 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Nav, Wrapper, LogoContainer, NavLink, Bars, Close, NavMenu, NavBtn, NavBtnLink } from './NavbarElements.js';
+import { LogoContainer, NavLink, NavBtnLink } from './NavbarElements.js';
 import logo from '../../../assets/logo.png'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../auth/useAuth'
+import { useNavigate } from 'react-router-dom';
 
 
-const pages = ['Productos', 'Nosotros', 'Contacto'];
-const settings = ['Cuenta', 'Administración'];
+const pages = ['Admin'];
 
 const ResponsiveAppBar = () => {
+    let navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
     const handleLogOut = () => {
         localStorage.removeItem('user');
+        navigate('/')
         window.location.reload();
     };
 
@@ -64,7 +55,7 @@ const ResponsiveAppBar = () => {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <AppBar position="initial" color='primary'>
+            <AppBar position="sticky" color='primary'>
                 <Container maxWidth="xl">
                     <Toolbar >
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -109,7 +100,7 @@ const ResponsiveAppBar = () => {
                                     </MenuItem>
                                 </NavLink>
                                 {pages.map((page) => (
-                                    <NavLink to={'/' + page}>
+                                    <NavLink to={'/' + page} key={page}>
                                         <MenuItem key={page} onClick={handleCloseNavMenu}>
                                             <Typography textAlign="center">{page}</Typography>
                                         </MenuItem>
@@ -119,7 +110,7 @@ const ResponsiveAppBar = () => {
                         </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page) => (
-                                <NavLink to={'/' + page}>
+                                <NavLink to={'/' + page} key={page}>
                                     <Button
                                         key={page}
                                         onClick={handleCloseNavMenu}
@@ -133,43 +124,9 @@ const ResponsiveAppBar = () => {
                         <Box sx={{ marginRight: { md: "15%" }, flexGrow: 0 }}>
                             {
                                 !userData
-                                    ? <NavBtnLink to='/sign-in'>Ingresa</NavBtnLink>
-                                    : <Tooltip title="Opciones">
-                                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                            <Avatar alt="Admin" src="/static/images/avatar/2.jpg" />
-                                        </IconButton>
-                                    </Tooltip>
+                                    ? <NavBtnLink to='/' onClick={handleLogOut}>Ingresar</NavBtnLink>
+                                    : <NavBtnLink to='/' onClick={handleLogOut}>Salir</NavBtnLink>
                             }
-
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <NavLink to={'/' + setting}>
-                                            <Typography textAlign="center">{setting}</Typography>
-                                        </NavLink>
-                                    </MenuItem>
-                                ))}
-                                <MenuItem onClick={handleLogOut}>
-                                    <NavLink to={'/'}>
-                                        <Typography textAlign="center">Salir</Typography>
-                                    </NavLink>
-                                </MenuItem>
-                            </Menu>
                         </Box>
                     </Toolbar>
                 </Container>
